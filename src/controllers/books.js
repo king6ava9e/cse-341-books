@@ -1,3 +1,4 @@
+
 import {
     getAllBooks,
     getBookById,
@@ -38,8 +39,13 @@ const createBookHandler = async (req, res) => {
     try {
         const { id, authorId, title, publicationDate } = req.body;
 
-        if (!id || !authorId || !title || !publicationDate) {
-            return res.status(400).json({ message: 'Missing required book fields.' });
+        if (
+            typeof id !== 'string' || !id.trim() ||
+            typeof authorId !== 'string' || !authorId.trim() ||
+            typeof title !== 'string' || !title.trim() ||
+            typeof publicationDate !== 'string' || !publicationDate.trim()
+        ) {
+            return res.status(400).json({ message: 'Missing or invalid book fields.' });
         }
 
         const existingBook = await getBookById(id);
@@ -73,8 +79,12 @@ const updateBookHandler = async (req, res) => {
         const { id } = req.params;
         const { authorId, title, publicationDate } = req.body;
 
-        if (!authorId || !title || !publicationDate) {
-            return res.status(400).json({ message: 'Missing required book fields.' });
+        if (
+            typeof authorId !== 'string' || !authorId.trim() ||
+            typeof title !== 'string' || !title.trim() ||
+            typeof publicationDate !== 'string' || !publicationDate.trim()
+        ) {
+            return res.status(400).json({ message: 'Missing or invalid book fields.' });
         }
 
         const existingBook = await getBookById(id);
